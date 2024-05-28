@@ -1,27 +1,26 @@
+using Microsoft.Extensions.Primitives;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 app.Run(async (HttpContext context) =>
 {
-    string path = context.Request.Path;
-    string method = context.Request.Method;
-    context.Response.Headers["MyKey"] = "my value";
-    context.Response.Headers["Server"] = "My Server";
-    context.Response.ContentType = "text/html";
-    if (context.Request.Headers.ContainsKey("AuthorizationKey"))
-    {
-        string id = context.Request.Query["id"];
-        await context.Response.WriteAsync($"<p>Id: {id}</p>");
-        string name = context.Request.Query["name"];
-        await context.Response.WriteAsync($"<p>Name: {name}</p>");
-        string auth = context.Request.Headers["AuthorizationKey"];
-        await context.Response.WriteAsync($"<p>Authorization Key: {auth}</p>");
+    System.IO.StreamReader reader = new System.IO.StreamReader(context.Request.Body);
+    string body = await reader.ReadToEndAsync();
 
+    Dictionary<string, StringValues> queryDict = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
+
+    if (queryDict.ContainsKey("firstName"))
+    {
+        string firstName = queryDict["firstName"][0];
+        string age = queryDict["age"][0];
+
+        foreach (var item in queryDict["age"])
+        {
+            await context.Response.WriteAsync($"{firstName} is {age} old");
+        }
     }
-    await context.Response.WriteAsync($"<p>{path}</p>");
-    await context.Response.WriteAsync($"<p>{method}</p>");
-    await context.Response.WriteAsync("<h1>Hello!</h1>");
-    await context.Response.WriteAsync("<h3>World!</h3>");
+
 });
 
 app.Run();
