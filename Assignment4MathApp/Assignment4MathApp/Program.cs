@@ -64,8 +64,8 @@ app.Run(async (HttpContext context) =>
                 case "add": result = firstNumber + secondNumber; break;
                 case "subtract": result = firstNumber - secondNumber; break;
                 case "multiply": result = firstNumber * secondNumber; break;
-                case "divide": result = (secondNumber != 0) ? firstNumber / secondNumber : 0; break; //avoid DivideByZeroException, if secondNuber is 0 (zero)
-                case "mod": result = (secondNumber != 0) ? firstNumber % secondNumber : 0; break; //avoid DivideByZeroException, if secondNuber is 0 (zero)
+                case "divide": result = (secondNumber != 0) ? firstNumber / secondNumber : 0; break; //avoid DivideByZeroException, if secondNumber is 0 (zero)
+                case "mod": result = (secondNumber != 0) ? firstNumber % secondNumber : 0; break; //avoid DivideByZeroException, if secondNumber is 0 (zero)
             }
 
             //If no case matched above, the "result" remains as 'null'
