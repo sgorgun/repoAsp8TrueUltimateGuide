@@ -48,6 +48,20 @@ app.UseEndpoints(endpoints =>
             await context.Response.WriteAsync("No date");
         }
     });
+
+    // Eg: cities/{cityId}
+    endpoints.Map("cities/{cityId:guid?}", async context =>
+    {
+        if (context.Request.RouteValues.ContainsKey("cityId"))
+        {
+            Guid cityId = Guid.Parse(Convert.ToString(context.Request.RouteValues["cityId"])!);
+            await context.Response.WriteAsync($"City ID: {cityId}"); 
+        }
+        else
+        {
+            await context.Response.WriteAsync("No city ID found");
+        }
+    });
 });
 
 app.Run(async context =>
