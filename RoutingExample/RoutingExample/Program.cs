@@ -8,16 +8,16 @@ app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
     // add your endpoints here
-    endpoints.Map("files/{filename}.{extension}", async context =>
+    endpoints.Map("files/{filename=document}.{extension=txt}", async context =>
     {
-        string? fileName = Convert.ToString(context.Request.RouteValues["filename=sergei"]);
-        string? extension = Convert.ToString(context.Request.RouteValues["extension=txt"]);
+        string? fileName = Convert.ToString(context.Request.RouteValues["filename"]);
+        string? extension = Convert.ToString(context.Request.RouteValues["extension"]);
         await context.Response.WriteAsync($"In files: {fileName}.{extension}");
     });
 
-    endpoints.Map("employee/profile/{employeeName}", async context =>
+    endpoints.Map("employee/profile/{employeeName=new}", async context =>
     {
-        string? employeeName = Convert.ToString(context.Request.RouteValues["employeeName=new"]);
+        string? employeeName = Convert.ToString(context.Request.RouteValues["employeeName"]);
         await context.Response.WriteAsync($"In files: {employeeName}");
     });
 
