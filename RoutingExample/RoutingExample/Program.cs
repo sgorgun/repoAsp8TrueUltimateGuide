@@ -15,14 +15,14 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync($"In files: {fileName}.{extension}");
     });
 
-    endpoints.Map("employee/profile/{employeeName?}", async context =>
+    endpoints.Map("employee/profile/{employeeName:minlength(3):alpha=newUser}", async context =>
     {
         string? employeeName = Convert.ToString(context.Request.RouteValues["employeeName"]);
-        await context.Response.WriteAsync($"In files: {employeeName}");
+        await context.Response.WriteAsync($"Name: {employeeName}");
     });
 
     // Eg: /products/details/
-    endpoints.Map("products/details/{id:int?}", async context =>
+    endpoints.Map("products/details/{id:int:range(1,1000)?}", async context =>
     {
         if (context.Request.RouteValues.ContainsKey("id"))
         {
@@ -61,6 +61,14 @@ app.UseEndpoints(endpoints =>
         {
             await context.Response.WriteAsync("No city ID found");
         }
+    });
+
+    // Eg: sales-report/2030/apr/
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+    {
+        int? year = Convert.ToInt32(context.Request.RouteValues["year"]);
+        string? month = Convert.ToString(context.Request.RouteValues["month"]);
+        await context.Response.WriteAsync($"Year: {year}, Month: {month}");
     });
 });
 
