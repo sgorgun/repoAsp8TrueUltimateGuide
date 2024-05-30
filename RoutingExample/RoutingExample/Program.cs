@@ -21,7 +21,8 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync($"In files: {employeeName}");
     });
 
-    endpoints.Map("products/details/{id?}", async context =>
+    // Eg: /products/details/
+    endpoints.Map("products/details/{id:int?}", async context =>
     {
         if (context.Request.RouteValues.ContainsKey("id"))
         {
@@ -31,6 +32,20 @@ app.UseEndpoints(endpoints =>
         else
         {
             await context.Response.WriteAsync("No ID found");
+        }
+    });
+
+    //Eg: daily-digest-report/{reportdate}
+    endpoints.Map("daily-digest-report/{reportDate:datetime?}", async context =>
+    {
+        if (context.Request.RouteValues.ContainsKey("reportDate"))
+        {
+            DateTime? reportDate = Convert.ToDateTime(context.Request.RouteValues["reportDate"]);
+            await context.Response.WriteAsync($"Report Date: {reportDate?.ToShortDateString()}");
+        }
+        else
+        {
+            await context.Response.WriteAsync("No date");
         }
     });
 });
