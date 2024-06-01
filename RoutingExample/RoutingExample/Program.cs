@@ -14,7 +14,7 @@ var app = builder.Build();
 app.UseRouting();
 
 // creating endpoints
-app.UseEndpoints(endpoints =>
+app.UseEndpoints(async endpoints =>
 {
     // add your endpoints here
     endpoints.Map("files/{filename}.{extension}", async context =>
@@ -72,14 +72,20 @@ app.UseEndpoints(endpoints =>
         }
     });
 
-    // Eg: sales-report/2030/apr/
+    // Eg: sales-report/2024/jan
     endpoints.Map("sales-report/{year:int:min(1900)}/{month:month}", async context => // month is a custom constraint
     {
         int? year = Convert.ToInt32(context.Request.RouteValues["year"]);
         string? month = Convert.ToString(context.Request.RouteValues["month"]);
         await context.Response.WriteAsync($"Year: {year}, Month: {month}");
     });
-});
+
+//    // Eg: sales-report/2024/jan
+//    endpoints.Map("sales-report/2024/jan", async context => // has more weight than previous
+//    {
+//        await context.Response.WriteAsync("Year: 2024, Month: Jan");
+//    });
+//});
 
 app.Run(async context =>
 {
