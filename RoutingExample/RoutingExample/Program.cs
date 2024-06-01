@@ -1,4 +1,13 @@
+using RoutingExample.CustomConstraints;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add custom constraints services to the container.
+builder.Services.AddRouting(options =>
+{
+    options.ConstraintMap.Add("month", typeof(MonthsCustomConstraint));
+});
+
 var app = builder.Build();
 
 // enable routing
@@ -64,7 +73,7 @@ app.UseEndpoints(endpoints =>
     });
 
     // Eg: sales-report/2030/apr/
-    endpoints.Map("sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+    endpoints.Map("sales-report/{year:int:min(1900)}/{month:month}", async context => // month is a custom constraint
     {
         int? year = Convert.ToInt32(context.Request.RouteValues["year"]);
         string? month = Convert.ToString(context.Request.RouteValues["month"]);
