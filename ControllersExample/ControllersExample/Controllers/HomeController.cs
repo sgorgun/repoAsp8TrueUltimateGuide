@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ControllersExample.Model;
 
 namespace ControllersExample.Controllers
 {
@@ -15,10 +16,19 @@ namespace ControllersExample.Controllers
             return Content("<h1>Welcome</h1> <h2>Hello from Index</h2>", "text/html");
         }
 
-        [Route("about")]
-        public string About()
+        [Route("person")]
+        public JsonResult Person()
         {
-            return "Hello from About";
+            Person person = new Person
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "John",
+                LastName = "Doe",
+                Age = 30
+            };
+            //return new JsonResult(person);
+            return Json(person);
+            //return "{ \"key\": \"value\" }";
         }
 
         [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
