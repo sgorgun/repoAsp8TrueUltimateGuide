@@ -47,7 +47,7 @@ namespace ControllersExample.Controllers
         }
 
         [Route("file-download3")]
-        public FileContentResult FileDownload3()
+        public IActionResult FileDownload3()
         {
             byte[] bytes = System.IO.File.ReadAllBytes(@"c:/asp/sample.pdf");
             //return new FileContentResult(bytes, "application/pdf");
