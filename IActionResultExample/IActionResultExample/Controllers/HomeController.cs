@@ -6,7 +6,6 @@ namespace IActionResultExample.Controllers
     {
         [Route("bookStore")]
         public IActionResult Index()
-        
         {
             // BookID should be supplied in the query string
             if (!Request.Query.ContainsKey("bookId"))
@@ -28,13 +27,30 @@ namespace IActionResultExample.Controllers
             }
 
             //is logged in should be true
-            if (!Convert.ToBoolean(Request.Query["isLoggedIn"]))
+            if (Convert.ToBoolean(Request.Query["isLoggedIn"]) == false)
             {
-                return Unauthorized("User is not logged in");
+                //return Unauthorized("User is not logged in");
+                return StatusCode(401);
             }
 
+            // 302 Found - RedirectToActionResult
             //return new RedirectToActionResult("Books", "Store", new { });  // 302 Found
-            return new RedirectToActionResult("Books", "Store", new { }, true); // 301 Moved Permanently
+            //return RedirectToAction("Books", "Store", new { id = bookId });
+
+            // 301 Moved Permanently - RedirectToActionResult
+            // return new RedirectToActionResult("Books", "Store", new { }, true); // 301 Moved Permanently
+            //return RedirectToActionPermanent("Books", "Store", new { id = bookId });
+
+            // 302 Found - RedirectToRouteResult
+            //return new LocalRedirectResult($"store/books/{bookId}");
+            //return LocalRedirect($"store/books/{bookId}"); // 302 Found
+
+            // 301 Moved Permanently - RedirectToRouteResult
+            return new LocalRedirectResult($"store/books/{bookId}", true); // 301 Moved Permanently
+            //return LocalRedirectPermanent($"store/books/{bookId}"); // 301 Moved Permanently
+
+            //return Redirect($"store/books/{bookId}"); // 302 Found
+            //return RedirectPermanent($"store/books/{bookId}"); // 301 Moved Permanently
         }
     }
 }
