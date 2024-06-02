@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ControllersExample.Model;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ControllersExample.Controllers
 {
@@ -31,10 +32,26 @@ namespace ControllersExample.Controllers
             //return "{ \"key\": \"value\" }";
         }
 
-        [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
-        public string Contact()
+        [Route("file-download")]
+        public VirtualFileResult FileDownload()
         {
-            return "Hello from Contact";
+            //return new VirtualFileResult("/sample.pdf", "application/pdf");
+            return File("/sample.pdf", "application/pdf");
+        }
+
+        [Route("file-download2")]
+        public PhysicalFileResult FileDownload2()
+        {
+            //return new PhysicalFileResult(@"c:/asp/sample.pdf", "application/pdf");
+            return PhysicalFile(@"c:/asp/sample.pdf", "application/pdf");
+        }
+
+        [Route("file-download3")]
+        public FileContentResult FileDownload3()
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(@"c:/asp/sample.pdf");
+            //return new FileContentResult(bytes, "application/pdf");
+            return File(bytes, "application/pdf");
         }
     }
 }
