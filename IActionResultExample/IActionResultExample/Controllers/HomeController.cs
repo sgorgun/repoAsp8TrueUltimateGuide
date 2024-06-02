@@ -4,8 +4,9 @@ namespace IActionResultExample.Controllers
 {
     public class HomeController : Controller
     {
-        [Route("book")]
+        [Route("bookStore")]
         public IActionResult Index()
+        
         {
             // BookID should be supplied in the query string
             if (!Request.Query.ContainsKey("bookId"))
@@ -31,10 +32,11 @@ namespace IActionResultExample.Controllers
             {
                 return Unauthorized("User is not logged in");
             }
-            
-            return File("/sample.pdf", "application/pdf");
+
+            //return new RedirectToActionResult("Books", "Store", new { });  // 302 Found
+            return new RedirectToActionResult("Books", "Store", new { }, true); // 301 Moved Permanently
         }
     }
 }
 
-// http://localhost:5211/book?bookid=1&isLoggedIn=true
+// http://localhost:5211/bookstore?bookid=5&isLoggedIn=true
