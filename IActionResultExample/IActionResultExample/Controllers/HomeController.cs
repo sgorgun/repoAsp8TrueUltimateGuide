@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using IActionResultExample.Models;
 
 namespace IActionResultExample.Controllers
 {
@@ -6,7 +7,7 @@ namespace IActionResultExample.Controllers
     {
         [Route("bookstore/{bookid?}/{isloggedin?}")]
         //Url: /bookstore?bookid=10&isloggedin=true
-        public IActionResult Index([FromQuery]int? bookid, [FromQuery] bool? isloggedin)
+        public IActionResult Index([FromQuery]int? bookid, [FromRoute] bool? isloggedin, [FromQuery]Book book)
         {
             //Book id should be applied
             if (bookid.HasValue == false)
@@ -37,7 +38,7 @@ namespace IActionResultExample.Controllers
                 return StatusCode(401, "You need to login");
             }
 
-            return Content($"Book id: {bookid}", "text/plain");
+            return Content($"Book id: {bookid}, Book: {book}", "text/plain");
         }
     }
 }
