@@ -6,7 +6,7 @@ namespace IActionResultExample.Controllers
     {
         [Route("bookstore/{bookid?}/{isloggedin?}")]
         //Url: /bookstore?bookid=10&isloggedin=true
-        public IActionResult Index(int? bookid, bool? isloggedin)
+        public IActionResult Index([FromQuery]int? bookid, [FromQuery] bool? isloggedin)
         {
             //Book id should be applied
             if (bookid.HasValue == false)
@@ -34,7 +34,7 @@ namespace IActionResultExample.Controllers
             //isloggedin should be true
             if (isloggedin == false)
             {
-                return StatusCode(401);
+                return StatusCode(401, "You need to login");
             }
 
             return Content($"Book id: {bookid}", "text/plain");
