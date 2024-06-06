@@ -4,7 +4,7 @@ namespace ModelValidationsExample.Models
 {
     public class Person
     {
-        [Required]
+        [Required(ErrorMessage = "Person name can't be empty or null")]
         public string? PersonName { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
