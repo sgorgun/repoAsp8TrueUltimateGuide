@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using ModelValidationsExample.CustomValidators;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace ModelValidationsExample.Models
@@ -26,9 +27,13 @@ namespace ModelValidationsExample.Models
         [Compare("Password", ErrorMessage = "{0} and {1} do not match")]
         [Display(Name = "Re-Enter Password")]
         public string? ConfirmPassword { get; set; }
-        
+
         [Range(0, 999.99, ErrorMessage = "{0} should be between ${1} and ${2}")]
         public double? Price { get; set; }
+
+        //[MinimumYearValidator(2005, ErrorMessage = "Year of birth should be newer than {0}")]
+        [MinimumYearValidator(2005)]
+        public DateTime? DateOfBirth { get; set; }
 
         public override string ToString()
         {
